@@ -1,7 +1,8 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <math.h>
-
+// passei por aqui e contribui com um comentário.
+// aceite, por favor.
 void calculate(float *coin, int *cont, float *change)
 {
     // Função que calcula a quantidade de moedas
