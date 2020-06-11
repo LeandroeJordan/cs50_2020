@@ -1,6 +1,9 @@
 #include <cs50.h>
 #include <stdio.h>
-
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <math.h>
 // Max number of candidates
 #define MAX 9
 
@@ -95,46 +98,166 @@ int main(int argc, string argv[])
     print_winner();
     return 0;
 }
+// search the candidate in name
+int get_index(string name)
+{
+    for (int i = 0; i < candidate_count ; i++)
+    {
+        if (strcmp(candidates[i], name) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-    // TODO
+    int candidate_index = get_index(name);
+    if (candidate_index != -1)
+    {
+        ranks[rank] = candidate_index;
+        return true;
+    }
     return false;
+    
 }
 
 // Update preferences given one voter's ranks
 void record_preferences(int ranks[])
 {
-    // TODO
-    return;
+    for (int i = 0; i < candidate_count ; i++)
+    {
+        for (int j = i + 1; j < candidate_count; j++)
+        {
+            preferences[ranks[i]] [ranks[j]]++;
+        }
+    }
+    
+   
 }
 
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    // TODO
-    return;
+    for (int ipref = 0; ipref < candidate_count || ipref > MAX; ipref++)
+    {
+        for (int iover = 0; iover < candidate_count || iover > MAX; iover++)
+        {
+            if (preferences[ipref][iover] > preferences[iover] [ipref])
+            {
+                pair p;
+                p.winner = ipref;
+                p.loser = iover;
+                pairs[pair_count++] = p;
+            }
+        }
+    }
+    
 }
 
+//compare elements in the margins
+int compare(const void *elem1, const void *elem2)
+{
+    pair f = *((pair *) elem1);
+    pair s = *((pair *) elem2);
+    int first_margin = preferences[f.winner][f.loser] - preferences[f.loser][f.winner];
+    int second_margin = preferences[s.winner][s.loser] - preferences[s.loser][s.winner];
+    return second_margin - first_margin;
+    
+}
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    // TODO
-    return;
+    qsort(pairs, pair_count, sizeof(pair), compare);
+    
 }
+bool has_cycle_helper(int index, bool visited[]);
+
+//check if ther are cyrcles
+bool has_cycle(int starting_index)
+{
+    bool visited[candidate_count];
+    for (int i = 0; i < candidate_count; i++)
+    {
+        visited[i] = false;
+    }
+    return has_cycle_helper(starting_index, visited);
+}
+
+//helps in the cyrcle solutions
+bool has_cycle_helper(int index, bool visited[])
+{
+    if (visited[index])
+    {
+        return true;
+    }
+    
+    visited[index] = true;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (locked[index][i] && has_cycle_helper(i, visited))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
-    return;
+   
+    for (int i = 0; i < pair_count; i++)
+    {
+        locked[pairs[i].winner][pairs[i].loser] = true;
+        if (has_cycle(pairs[i].winner))
+        {
+            locked[pairs[i].winner][pairs[i].loser] = false;
+        }
+    }
+    
 }
+
+//is the source
+bool is_source(int index)
+{
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (locked[i][index])
+        {
+            return false;
+        }
+    }
+    return true; 
+}
+
+//Get the source
+bool get_source()
+{
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (is_source(i))
+        {
+            return i;
+        }
+       
+    }
+    return -1; 
+}
+
 
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
-    return;
-}
+    int index = get_source();
+    if (index != -1)
+    {
+        printf("%s\n", candidates[index]);
+        printf("%s%s%s\n", candidates[0], candidates[1], candidates[2]);
+    }
 
+}
