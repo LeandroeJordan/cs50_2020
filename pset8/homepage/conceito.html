@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+    <title>Git Info - codigopratodos.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadowed">
+      <a class="navbar-brand" href="#">Git Info</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Introdução</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Conceitos <span class="sr-only">(selecionado)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="extras.html">Extras</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="github.html">GitHub & OpenSource</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container margin-top">
+      <h1>Repositório</h1>
+      <p>
+        O Git trabalha com unidades que chamamos de <em>repositórios</em>. Que nada mais é que uma
+        pasta de arquivos. O repositório contém duas peças principais: o repositório de versão e a
+        cópia em andamento.
+      </p>
+
+      <p>
+        A cópia em andamento consiste de arquivos normais organizados em estrutura de diretório. E o
+        repositório de versão, armazena as versões anteriores desses arquivos e diretórios. Podemos
+        considerá-la dessa forma:
+      </p>
+
+      <img
+        src="imagens/Git006.png"
+        alt="repositório de versão vs cópia em andamento"
+        class="img-fluid"
+      />
+
+      <p>
+        Para criar um repositório podemos usar o comando <code>git init</code> ou podemos clonar
+        repositórios que criamos no github ou copiamos de algum outro projeto de seu interesse (mais
+        comum).
+      </p>
+
+      <pre>
+        git clone git@github.com:leordev/cs50-homepage.git
+      </pre>
+
+      <h1>Commits</h1>
+
+      <p>
+        Digamos que você tenha feito alterações na sua cópia em andamento... O Git não faz o track
+        automático de cada alteração. O comando <code>git commit -a</code> tira uma "foto" do seu
+        diretório atual e salva no repositório de versão.
+      </p>
+
+      <img src="imagens/Git006.png" alt="commitando com flag -a" class="img-fluid" />
+
+      <p>
+        <em
+          >O flag <code>-a</code> significa "comite todas as alterações no diretório em
+          andamento".</em
+        >
+      </p>
+
+      <p>
+        Junto com o commit você deve adicionar uma mensagem explicativa das alterações que estão
+        sendo adicionadas:
+      </p>
+
+      <pre>
+        git commit -a "criando a página de conceitos"
+      </pre>
+
+      <h1>Push</h1>
+
+      <p>
+        Após ter commitado suas alterações, chegou a hora de copiar seu repositório de versões para
+        um repositório remoto. No nosso caso, estamos usando o github. Para isso basta executar o
+        comando <code>git push</code>.
+      </p>
+
+      <h2>Configurando um Repositório remoto pela primeira vez</h2>
+
+      <p>
+        Caso você esteja configurando um repositório pela primeira vez, você deve adicionar o
+        repositório remoto e configurar o git push.
+      </p>
+
+      <pre>
+        git remote add origin git@github.com:leordev/cs50-homepage.git
+        git push -u origin master
+      </pre>
+
+      <p>
+        E pronto! Agora seu repositório está configurado, nas próximas vezes, basta utilizar o
+        <code>git push</code> apenas, como mencionado acima.
+      </p>
+
+      <h1>Pull</h1>
+
+      <p>
+        Caso você esteja trabalhando em mais de um dispositivo, ou trabalhando em equipe, você deve
+        sempre manter seu repositório sincronizado. Para isso, faça
+        <code>git pull</code> regularmente.
+      </p>
+
+      <p>
+        <em
+          >Fonte:
+          <a href="https://cs61.seas.harvard.edu/site/ref/git/" target="_blank"
+            >https://cs61.seas.harvard.edu/site/ref/git/</a
+          ></em
+        >
+      </p>
+    </div>
+    <script src="interactions.js"></script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+//void blur(int height, int width, RGBTRIPLE image[height][width])
+// Blur image
+//void blur(int height, int width, RGBTRIPLE image[height][width])
+void blur(int height, int width, RGBTRIPLE image[height][width])
+{
+
+    RGBTRIPLE image2[height][width];
+    RGBTRIPLE image3[3][3];
+    image3[0][0].rgbtRed = 10; image3[0][1].rgbtRed = 40; image3[0][2].rgbtRed = 70; 
+    image3[1][0].rgbtRed = 110; image3[1][1].rgbtRed = 120; image3[1][2].rgbtRed = 130;
+    image3[2][0].rgbtRed = 200; image3[2][0].rgbtRed = 220; image3[2][0].rgbtRed = 240;
+    
+    image3[0][0].rgbtGreen = 20; image3[0][1].rgbtGreen = 50; image3[0][2].rgbtGreen = 80; 
+    image3[1][0].rgbtGreen = 130; image3[1][1].rgbtGreen = 140; image3[1][2].rgbtGreen = 150;
+    image3[2][0].rgbtGreen = 210; image3[2][0].rgbtGreen = 230; image3[2][0].rgbtGreen = 250;
+    
+    image3[0][0].rgbtBlue = 30; image3[0][1].rgbtBlue = 60; image3[0][2].rgbtBlue = 90; 
+    image3[1][0].rgbtBlue = 140; image3[1][1].rgbtBlue = 150; image3[1][2].rgbtBlue = 160;
+    image3[2][0].rgbtBlue = 220; image3[2][0].rgbtBlue = 240; image3[2][0].rgbtBlue = 255;
+    
+    for (int iline = 0; iline < height; iline++)
+    {
+        for (int icol = 0; icol < width; icol++)
+        {
+            int avgred = 0, avggrn = 0, avgblu = 0, rcounter = 0, gcounter = 0, bcounter = 0;
+          //  neibour(height, width, (iline - 1), (icol - 1), image3);
+            neibour(3, 3, (iline - 1), (icol - 1), image3);
+            for (int l = 0; l < maxline; l++)
+            {
+                for (int c = 0; c < maxcol; c++)
+                {
+                    if (array_neibour[l][c].rgbtRed > 0)
+                    {
+                        avgred = avgred + array_neibour[l][c].rgbtRed;
+                        rcounter++;
+                    }
+                    
+                    if (array_neibour[l][c].rgbtGreen > 0)
+                    {
+                        avggrn = avggrn + array_neibour[l][c].rgbtGreen;
+                        gcounter++;
+                    }
+                    
+                    if (array_neibour[l][c].rgbtBlue > 0)
+                    {
+                        avgblu = avgblu + array_neibour[l][c].rgbtBlue;
+                        bcounter++;
+                    }
+
+                }
+            }
+            //to calculate the average
+            avgred = (int)round((float)avgred / (float)rcounter++);
+            avggrn = (int)round((float)avggrn / (float)gcounter++);
+            avgblu = (int)round((float)avgblu / (float)bcounter++);
+            image2[iline][icol].rgbtRed = avgred;
+            image2[iline][icol].rgbtGreen = avggrn;
+            image2[iline][icol].rgbtBlue = avgblu;
+            rcounter = 0;
+            gcounter = 0;
+            bcounter = 0; 
+
+        }
+
+    }
+
+//update image from ima2
+    for (int l = 0; l < (3 - 1); l++)
+    {
+        for (int c = 0; c < (3 - 1); c++)
+        {
+           printf("image2 %i%i%i\n", image2[l][c].rgbtRed, image2[l][c].rgbtGreen, image2[l][c].rgbtBlue);
+
+        }
+    }
+    return;
+}
+
+// Blur image
+void blur(int height, int width, RGBTRIPLE image[height][width])
+{
+
+    RGBTRIPLE image2[height][width];
+    
+    
+    for (int iline = 0; iline < height; iline++)
+    {
+        for (int icol = 0; icol < width; icol++)
+        {
+            int avgred = 0, avggrn = 0, avgblu = 0, rcounter = 0, gcounter = 0, bcounter = 0;
+            
+            neibour(height, width, (iline - 1), (icol - 1), image);
+            for (int l = 0; l < maxline; l++)
+            {
+                for (int c = 0; c < maxcol; c++)
+                {
+                    if (array_neibour[l][c].rgbtRed > 0)
+                    {
+                        avgred = avgred + array_neibour[l][c].rgbtRed;
+                        rcounter++;
+                    }
+                    
+                    if (array_neibour[l][c].rgbtGreen > 0)
+                    {
+                        avggrn = avggrn + array_neibour[l][c].rgbtGreen;
+                        gcounter++;
+                    }
+                    
+                    if (array_neibour[l][c].rgbtBlue > 0)
+                    {
+                        avgblu = avgblu + array_neibour[l][c].rgbtBlue;
+                        bcounter++;
+                    }
+
+                }
+            }
+            //to calculate the average
+            avgred = (int)round((float)avgred / (float)rcounter++);
+            avggrn = (int)round((float)avggrn / (float)gcounter++);
+            avgblu = (int)round((float)avgblu / (float)bcounter++);
+            image2[iline][icol].rgbtRed = avgred;
+            image2[iline][icol].rgbtGreen = avggrn;
+            image2[iline][icol].rgbtBlue = avgblu;
+            rcounter = 0;
+            gcounter = 0;
+            bcounter = 0;
+
+        }
+
+    }
+
+
+   //update image from ima2
+    for (int l = 0; l < (height - 1); l++)
+    {
+        for (int c = 0; c < (width - 1); c++)
+        {
+            image[l][c] = image2[l][c];
+
+        }
+    }
+    return;
+}
